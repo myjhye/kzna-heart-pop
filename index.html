@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#dfeefc">
+  <title>KZNA HEART POP — 推しにハートを届けよう！</title>
+  <meta name="description" content="KZNA HEART POP：合体させてハートを届けよう！推しのLOVE LEVELを上げるパズルゲーム。">
+  <meta property="og:title" content="KZNA HEART POP">
+  <meta property="og:description" content="推しにハートを届けよう！">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- 1. 멤버 선택 -->
+    <section id="screen-select" class="screen active">
+      <div class="select-head">
+        <div class="logo"><span class="logo-k">kzna</span><span class="logo-t">HEART POP</span></div>
+        <p class="select-sub">合体させて、推しにハートを届けよう！</p>
+      </div>
+      <h2 class="select-title">推しを選んでね！</h2>
+      <div class="member-grid" id="memberGrid"></div>
+      <p class="select-foot">同じアイテムを合体 → ハートが推しへ → LOVE LEVEL UP</p>
+    </section>
+
+    <!-- 2. 게임 -->
+    <section id="screen-game" class="screen">
+      <header class="stage" id="stage">
+        <div class="stage-bg"><div class="rays"></div></div>
+        <div class="stage-copy">
+          <div class="member-name" id="memberName">SEHA · セハ</div>
+          <div class="stage-tag">推しにハートを届けよう！</div>
+        </div>
+        <div class="avatar-wrap">
+          <div class="avatar" id="avatar"></div>
+          <div class="bubble" id="bubble"></div>
+        </div>
+      </header>
+
+      <div class="love-hud" id="loveHud">
+        <div class="lv-box">
+          <span class="lbl">LOVE LEVEL</span>
+          <span class="lv-val" id="lvVal">LV. 01</span>
+        </div>
+        <div class="gauge-box">
+          <div class="gauge-top"><span class="lbl">ハートゲージ</span><span class="gauge-text" id="gaugeText">0 / 300</span></div>
+          <div class="gauge" id="gauge"><div class="gauge-fill" id="gaugeFill"></div><div class="gauge-gloss"></div></div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><span class="lbl">SCORE</span><span class="num" id="score">0</span></div>
+        <div class="stat"><span class="lbl">BEST</span><span class="num" id="best">0</span></div>
+        <div class="stat stat-next"><span class="lbl">NEXT</span><canvas id="nextCanvas"></canvas></div>
+      </div>
+
+      <main class="board-wrap" id="boardWrap">
+        <canvas id="board"></canvas>
+        <div class="center-msg" id="centerMsg"></div>
+        <div class="levelup-banner" id="levelBanner"></div>
+      </main>
+
+      <footer class="controls">
+        <button class="icon-btn" id="btnSound" aria-label="サウンド">
+          <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" class="ic-off"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <span class="hint">ドラッグして離すとドロップ</span>
+        <button class="icon-btn" id="btnRestart" aria-label="リスタート">
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </footer>
+    </section>
+
+    <!-- 3. 결과 -->
+    <section id="screen-result" class="result">
+      <div class="result-card">
+        <div class="result-title">RESULT</div>
+        <div class="result-badges">
+          <span class="badge" id="resBest">NEW BEST!</span>
+          <span class="badge special" id="resSpecial">SPECIAL LOVE</span>
+        </div>
+        <div class="result-art avatar" id="resArt"></div>
+        <p class="result-quote" id="resQuote"></p>
+        <div class="result-main">
+          <div class="rm"><span class="lbl">SCORE</span><b id="resScore">0</b></div>
+          <div class="rm love"><span class="lbl"><span id="resMember">SEHA</span> LOVE</span><b>LV.<span id="resLv">1</span></b></div>
+        </div>
+        <p class="result-line" id="resLine"></p>
+        <div class="result-sub">届けたハート <b id="resHearts">0</b>個 ・ LOVE <b id="resLove">0</b></div>
+        <div class="result-btns">
+          <button class="btn primary" id="btnAgain">もう一回</button>
+          <button class="btn x" id="btnShare">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-6.9-6.1 6.9H1.3l7.9-9L.9 2.3h7l4.8 6.3 5.5-6.3zm-1.2 17.9h1.9L7 4.2H5z"/></svg>
+            結果をシェア
+          </button>
+          <button class="btn ghost" id="btnChange">推しを変える</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <script src="vendor/matter.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/members.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/member-view.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/hearts.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
