@@ -143,7 +143,7 @@
     var st = map[Math.min(lv, 7)] || 'celebrate';
     memberView.setLevel(lv);
     memberView.react(st, { priority: 3, duration: CFG.reactions.durations[st] + 300, line: HP.reactionLine(member, st) });
-    showBanner(HP.t('levelUp'), 'HEARTWARE LV. ' + pad2(lv));
+    showBanner(HP.t('levelUp'), 'HEARTWARE LV.' + lv);
     HP.Audio.levelUp();
     els.stage.classList.toggle('aura', lv >= 7);
     els.stage.style.setProperty('--aura', Math.min(1, (lv - 6) * 0.35));
@@ -180,7 +180,7 @@
     }
     els.gaugeFill.style.width = (Math.max(0, Math.min(1, gaugeView.value / need)) * 100).toFixed(2) + '%';
     els.gaugeText.textContent = fmt(gaugeView.value) + ' / ' + fmt(need);
-    els.lvVal.textContent = 'LV. ' + pad2(gaugeView.level);
+    els.lvVal.textContent = 'LV.' + gaugeView.level;
     els.hwLive.textContent = fmt(hwBase + love.total);
   }
 
@@ -200,15 +200,21 @@
       var b = document.createElement('button');
       b.className = 'member-card';
       b.style.setProperty('--mc', m.color);
+      b.style.setProperty('--tilt', (i % 2 ? 1.6 : -1.6) * (i < 2 ? 1 : -1) + 'deg');
       var bestLv = load('hp_love_' + m.id, 0);
       var hwc = loadHW(m.id);
       var art = (m.images && m.images.idle)
         ? '<img class="av-img" src="' + m.images.idle + '" alt="">'
         : HP.avatarSVG(m, 's' + i);
-      b.innerHTML = '<div class="card-art">' + art + '</div>' +
-        '<div class="card-name">' + m.name + (HP.memberLocalName(m) ? '<small>' + HP.memberLocalName(m) + '</small>' : '') + '</div>' +
-        '<div class="card-hw">HEARTWARE <b>' + fmt(hwc.love) + '</b></div>' +
-        (bestLv ? '<div class="card-best">BEST LOVE LV.' + bestLv + '</div>' : '');
+      var local = HP.memberLocalName(m);
+      // チェキ(인스탁스) 스타일 카드: 마스킹테이프 + 사진 + 손글씨 이름
+      b.innerHTML = '<span class="tape"></span>' +
+        '<div class="card-art">' + art +
+          '<div class="card-hw">' + fmt(hwc.love) + '</div>' +
+          (bestLv ? '<div class="card-best"><small>LOVE</small>' + bestLv + '</div>' : '') +
+        '</div>' +
+        '<div class="card-cap"><span class="card-name">' + m.name + '</span>' + (local ? '<span class="card-sign">' + local + '</span>' : '') + '</div>';
+      b.setAttribute('aria-label', m.name + (local ? ' ' + local : '') + ' — HEARTWARE ' + fmt(hwc.love));
       var svg = b.querySelector('.card-art svg');
       if (svg) HP.applyPose(svg, 'happy', 2);
       b.addEventListener('click', function () { HP.Audio.unlock(); HP.Audio.tap(); startGame(m); });
@@ -295,7 +301,6 @@
     $('resScore').textContent = fmt(score);
     $('resMember').textContent = member.name;
     $('resLv').textContent = love.level;
-    $('resLine').textContent = 'SCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level;
     $('resLove').textContent = fmt(love.total);
     $('resBest').classList.toggle('show', isBest);
     $('resSpecial').classList.toggle('show', love.level >= 7);
@@ -326,13 +331,13 @@
   function setMemberName() {
     if (!member) return;
     var local = HP.memberLocalName(member);
-    els.memberName.innerHTML = member.name + (local ? ' <span>·</span> ' + local : '');
+    els.memberName.innerHTML = member.name + (local ? '<small>' + local + '</small>' : '');
   }
 
   // 결과 화면 중 언어에 따라 바뀌는 부분
   function fillResultText() {
     if (!member || !love) return;
-    $('resHearts').innerHTML = HP.t('heartsSent', { n: fmt(love.hearts) });
+    $('resHearts').textContent = HP.t('heartsSent', { n: fmt(love.hearts) });
     $('resQuote').textContent = resultQuote ? HP.t('quote', { t: resultQuote }) : '';
     $('btnHome').href = HP.homepageUrl();
     updateShareLink();

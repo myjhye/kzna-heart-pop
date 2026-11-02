@@ -61,7 +61,11 @@ HP.Hearts = (function () {
     sg.addColorStop(0, '#bff6ff');
     sg.addColorStop(0.5, '#ffffff');
     sg.addColorStop(1, '#ffc0ec');
-    c.lineWidth = S * 0.028;
+    c.lineWidth = S * 0.05;
+    c.strokeStyle = '#1e2a47';
+    c.stroke();
+    HP.heartPath(c, cx, cy, w * 0.9);
+    c.lineWidth = S * 0.018;
     c.strokeStyle = sg;
     c.stroke();
     // 하이라이트

@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#dfeefc">
+  <meta name="theme-color" content="#cfe3f7">
   <title>KZNA HEART POP — 推しにハートを届けよう！</title>
   <meta name="description" content="KZNA HEART POP：合体させてハートを届けよう！届いたハートは推しの心〈HEARTWARE〉に蓄積されていく。">
   <meta property="og:title" content="KZNA HEART POP">
   <meta property="og:description" content="推しにハートを届けよう！">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+KR:wght@500;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Hachi+Maru+Pop&family=Black+Han+Sans&family=Gaegu:wght@700&family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+KR:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -21,45 +21,60 @@
       <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
         <button data-lang="ko">KO</button><button data-lang="ja">JA</button><button data-lang="en">EN</button>
       </div>
-      <div class="select-head">
-        <div class="logo"><span class="logo-k" role="img" aria-label="kzna"></span><span class="logo-t">HEART POP</span></div>
-        <p class="select-sub" data-i18n="selectSub"></p>
-      </div>
-      <h2 class="select-title" data-i18n="selectTitle"></h2>
+
+      <header class="title">
+        <span class="title-logo" role="img" aria-label="kzna"></span>
+        <h1 class="title-name"><span class="spark s1">✦</span>HEART POP<span class="spark s2">✦</span></h1>
+        <span class="title-ribbon" data-i18n="ribbon"></span>
+        <p class="title-copy" data-i18n="selectSub"></p>
+      </header>
+
+      <h2 class="pick" data-i18n="selectTitle"></h2>
       <div class="member-grid" id="memberGrid"></div>
-      <p class="select-foot" data-i18n="selectFoot"></p>
+
+      <ol class="how">
+        <li><span class="how-ic how-merge" aria-hidden="true"></span><span data-i18n="how1"></span></li>
+        <li><span class="how-ic how-heart" aria-hidden="true"></span><span data-i18n="how2"></span></li>
+        <li><span class="how-ic how-lv" aria-hidden="true"></span><span data-i18n="how3"></span></li>
+      </ol>
     </section>
 
     <!-- 2. 게임 -->
     <section id="screen-game" class="screen">
-      <header class="stage" id="stage">
-        <div class="stage-bg"><div class="rays"></div></div>
-        <div class="stage-copy">
-          <div class="member-name" id="memberName"></div>
-          <div class="stage-tag" data-i18n="stageTag"></div>
-          <div class="hw-live">HEARTWARE <b id="hwLive">0</b></div>
-        </div>
-        <div class="avatar-wrap">
-          <div class="avatar" id="avatar"></div>
-        </div>
+      <div class="stage" id="stage">
+        <div class="stage-dots"><div class="rays"></div></div>
+        <header class="topbar">
+          <div class="who">
+            <div class="member-name" id="memberName"></div>
+            <div class="hw-live"><span class="hw-dot"></span>HEARTWARE <b id="hwLive">0</b></div>
+          </div>
+          <div class="tools">
+            <button class="icon-btn" id="btnSound" data-i18n-aria="sound">
+              <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+              <svg viewBox="0 0 24 24" class="ic-off"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+            </button>
+            <button class="icon-btn" id="btnRestart" data-i18n-aria="restart">
+              <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </header>
+        <div class="avatar-wrap"><div class="avatar" id="avatar"></div></div>
         <div class="bubble" id="bubble"></div>
-      </header>
+      </div>
 
-      <div class="love-hud" id="loveHud">
-        <div class="lv-box">
-          <span class="lbl">LOVE LEVEL</span>
-          <span class="lv-val" id="lvVal">LV. 01</span>
-        </div>
-        <div class="gauge-box">
-          <div class="gauge-top"><span class="lbl" data-i18n="gaugeLabel"></span><span class="gauge-text" id="gaugeText">0 / 300</span></div>
-          <div class="gauge" id="gauge"><div class="gauge-fill" id="gaugeFill"></div><div class="gauge-gloss"></div></div>
+      <!-- 하트 게이지 -->
+      <div class="love" id="loveHud">
+        <span class="lv" id="lvVal">LV.1</span>
+        <div class="gauge" id="gauge">
+          <div class="gauge-fill" id="gaugeFill"></div>
+          <span class="gauge-text" id="gaugeText">0 / 300</span>
         </div>
       </div>
 
-      <div class="stats-row">
-        <div class="stat"><span class="lbl">SCORE</span><span class="num" id="score">0</span></div>
-        <div class="stat"><span class="lbl">BEST</span><span class="num" id="best">0</span></div>
-        <div class="stat stat-next"><span class="lbl">NEXT</span><canvas id="nextCanvas"></canvas></div>
+      <div class="scoreline">
+        <div class="sc sc-score"><span class="sc-lbl" data-i18n="scoreLbl"></span><span class="sc-num" id="score">0</span></div>
+        <div class="sc sc-best"><span class="sc-lbl" data-i18n="bestLbl"></span><span class="sc-num" id="best">0</span></div>
+        <div class="sc sc-next"><span class="sc-lbl" data-i18n="nextLbl"></span><canvas id="nextCanvas"></canvas></div>
       </div>
 
       <main class="board-wrap" id="boardWrap">
@@ -67,47 +82,47 @@
         <div class="center-msg" id="centerMsg"></div>
         <div class="levelup-banner" id="levelBanner"></div>
       </main>
-
-      <footer class="controls">
-        <button class="icon-btn" id="btnSound" data-i18n-aria="sound">
-          <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <svg viewBox="0 0 24 24" class="ic-off"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-        <span class="hint" data-i18n="hint"></span>
-        <button class="icon-btn" id="btnRestart" data-i18n-aria="restart">
-          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </footer>
     </section>
 
-    <!-- 3. 결과 -->
-    <section id="screen-result" class="result">
-      <div class="result-card">
-        <div class="result-title">HEARTWARE UPDATE</div>
-        <div class="result-badges">
-          <span class="badge" id="resBest">NEW BEST!</span>
-          <span class="badge special" id="resSpecial">SPECIAL LOVE</span>
+    <!-- 3. 결과 (아래에서 올라오는 시트) -->
+    <section id="screen-result" class="result" aria-live="polite">
+      <div class="sheet">
+        <!-- 결과 チェキ: 사진 + 손글씨 대사 + LOVE 도장 -->
+        <div class="res-cheki">
+          <span class="tape"></span>
+          <div class="res-art avatar" id="resArt"></div>
+          <p class="res-quote" id="resQuote"></p>
+          <span class="res-member" id="resMember">SEHA</span>
+          <span class="hanko"><small>LOVE</small><b>Lv.<span id="resLv">1</span></b></span>
+          <span class="res-special" id="resSpecial">SPECIAL</span>
         </div>
-        <div class="result-art avatar" id="resArt"></div>
-        <p class="result-quote" id="resQuote"></p>
-        <div class="result-main">
-          <div class="rm"><span class="lbl">SCORE</span><b id="resScore">0</b></div>
-          <div class="rm love"><span class="lbl"><span id="resMember">SEHA</span> LOVE</span><b>LV.<span id="resLv">1</span></b></div>
+
+        <div class="res-stats">
+          <div class="rs">
+            <span class="rs-lbl" data-i18n="scoreLbl"></span>
+            <b class="rs-num" id="resScore">0</b>
+            <span class="res-best" id="resBest" data-i18n="newBest"></span>
+          </div>
+          <div class="rs rs-hw">
+            <span class="rs-lbl">HEARTWARE</span>
+            <b class="rs-num">+<span id="resLove">0</span></b>
+            <span class="rs-sub"><span id="resHearts"></span> · <span data-i18n="hwTotal"></span> <span id="resHwTotal">0</span></span>
+          </div>
         </div>
-        <p class="result-line" id="resLine"></p>
-        <div class="result-sub" id="resHearts"></div>
-        <div class="result-hw"><span class="hw-tag">HEARTWARE</span> +<b id="resLove">0</b> → <span data-i18n="hwTotal"></span> <b id="resHwTotal">0</b> LOVE</div>
-        <div class="result-btns">
-          <button class="btn primary" id="btnAgain" data-i18n="again"></button>
-          <a class="btn x" id="btnShare" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-6.9-6.1 6.9H1.3l7.9-9L.9 2.3h7l4.8 6.3 5.5-6.3zm-1.2 17.9h1.9L7 4.2H5z"/></svg>
+
+        <button class="btn btn-main" id="btnAgain" data-i18n="again"></button>
+        <div class="btn-row">
+          <a class="btn btn-x" id="btnShare" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-6.9-6.1 6.9H1.3l7.9-9L.9 2.3h7l4.8 6.3 5.5-6.3zm-1.2 17.9h1.9L7 4.2H5z"/></svg>
             <span data-i18n="share"></span>
           </a>
-          <button class="btn ghost" id="btnChange" data-i18n="change"></button>
+          <button class="btn btn-sub" id="btnChange" data-i18n="change"></button>
         </div>
-        <a class="btn-home" id="btnHome" href="https://kzna-homepage-17280846291.asia-northeast3.run.app/ja" target="_blank" rel="noopener">
-          <span class="home-logo" aria-hidden="true"></span><span data-i18n="homepage"></span>
-          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+        <a class="home" id="btnHome" href="https://kzna-homepage-17280846291.asia-northeast3.run.app/ja" target="_blank" rel="noopener">
+          <span class="home-logo" role="img" aria-label="kzna"></span>
+          <span data-i18n="homepage"></span>
+          <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </section>

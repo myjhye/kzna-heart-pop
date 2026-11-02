@@ -180,12 +180,14 @@ window.HP = window.HP || {};
     c.beginPath(); c.ellipse(-r * 0.38, -r * 0.5, r * 0.36, r * 0.2, -0.6, 0, TAU);
     c.fillStyle = 'rgba(255,255,255,0.75)'; c.fill();
     c.restore();
-    c.lineWidth = Math.max(1, r * 0.06);
-    c.strokeStyle = 'rgba(255,255,255,0.75)';
-    c.beginPath(); c.arc(0, 0, r - c.lineWidth / 2, 0, TAU); c.stroke();
-    c.lineWidth = 1.2;
-    c.strokeStyle = 'rgba(40,60,100,0.28)';
-    c.beginPath(); c.arc(0, 0, r, 0, TAU); c.stroke();
+    // 수박게임처럼 굵은 잉크 외곽선
+    var ink = Math.max(2, Math.min(3.2, r * 0.11));
+    c.lineWidth = Math.max(1, r * 0.05);
+    c.strokeStyle = 'rgba(255,255,255,0.7)';
+    c.beginPath(); c.arc(0, 0, r - ink - c.lineWidth / 2, 0, TAU); c.stroke();
+    c.lineWidth = ink;
+    c.strokeStyle = '#1e2a47';
+    c.beginPath(); c.arc(0, 0, r - ink / 2, 0, TAU); c.stroke();
     return { canvas: cv, half: r + pad };
   }
 
@@ -368,7 +370,8 @@ window.HP = window.HP || {};
   };
 
   Board.prototype.toast = function (text, x, y) {
-    this.texts.push({ text: text, x: x, y: y, t0: this.time, dur: 900 });
+    // 연쇄 중에는 최신 콤보 하나만 보여서 겹치지 않게
+    this.texts = [{ text: text, x: x, y: y, t0: this.time, dur: 900 }];
   };
 
   /* ---------- 좌표 변환 / 크기 ---------- */
@@ -424,7 +427,7 @@ window.HP = window.HP || {};
     c.setLineDash([7, 6]);
     c.lineWidth = danger ? 2.4 : 1.4;
     var blink = danger ? 0.5 + 0.5 * Math.sin(now / 90) : 1;
-    c.strokeStyle = danger ? 'rgba(255,60,120,' + (0.5 + 0.5 * blink) + ')' : (this.nearLine ? 'rgba(255,110,160,0.75)' : 'rgba(110,140,190,0.45)');
+    c.strokeStyle = danger ? 'rgba(255,60,120,' + (0.5 + 0.5 * blink) + ')' : (this.nearLine ? 'rgba(255,79,154,0.8)' : 'rgba(30,42,71,0.28)');
     c.beginPath(); c.moveTo(6, line); c.lineTo(this.W - 6, line); c.stroke();
     c.restore();
 
@@ -490,13 +493,14 @@ window.HP = window.HP || {};
       var q = (t - tx.t0) / tx.dur;
       c.save();
       c.globalAlpha = q < 0.7 ? 1 : 1 - (q - 0.7) / 0.3;
-      c.font = '800 17px "Outfit", "M PLUS Rounded 1c", sans-serif';
+      c.font = '400 18px "Dela Gothic One", "Black Han Sans", sans-serif';
       c.textAlign = 'center';
-      c.lineWidth = 4; c.strokeStyle = '#ffffff';
+      c.lineJoin = 'round';
+      c.lineWidth = 5; c.strokeStyle = '#1e2a47';
       var yy = tx.y - 28 - q * 26;
       var xx = Math.max(50, Math.min(this.W - 50, tx.x));
       c.strokeText(tx.text, xx, yy);
-      c.fillStyle = '#ff3f93';
+      c.fillStyle = '#ffd84d';
       c.fillText(tx.text, xx, yy);
       c.restore();
     }
