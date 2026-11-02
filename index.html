@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#dfeefc">
   <title>KZNA HEART POP — 推しにハートを届けよう！</title>
-  <meta name="description" content="KZNA HEART POP：合体させてハートを届けよう！推しのLOVE LEVELを上げるパズルゲーム。">
+  <meta name="description" content="KZNA HEART POP：合体させてハートを届けよう！届いたハートは推しの心〈HEARTWARE〉に蓄積されていく。">
   <meta property="og:title" content="KZNA HEART POP">
   <meta property="og:description" content="推しにハートを届けよう！">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+KR:wght@500;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,13 +18,16 @@
 
     <!-- 1. 멤버 선택 -->
     <section id="screen-select" class="screen active">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
+        <button data-lang="ko">KO</button><button data-lang="ja">JA</button><button data-lang="en">EN</button>
+      </div>
       <div class="select-head">
         <div class="logo"><span class="logo-k" role="img" aria-label="kzna"></span><span class="logo-t">HEART POP</span></div>
-        <p class="select-sub">合体させて、推しにハートを届けよう！</p>
+        <p class="select-sub" data-i18n="selectSub"></p>
       </div>
-      <h2 class="select-title">推しを選んでね！</h2>
+      <h2 class="select-title" data-i18n="selectTitle"></h2>
       <div class="member-grid" id="memberGrid"></div>
-      <p class="select-foot">同じアイテムを合体 → ハートが推しへ → LOVE LEVEL UP</p>
+      <p class="select-foot" data-i18n="selectFoot"></p>
     </section>
 
     <!-- 2. 게임 -->
@@ -32,13 +35,14 @@
       <header class="stage" id="stage">
         <div class="stage-bg"><div class="rays"></div></div>
         <div class="stage-copy">
-          <div class="member-name" id="memberName">SEHA · セハ</div>
-          <div class="stage-tag">推しにハートを届けよう！</div>
+          <div class="member-name" id="memberName"></div>
+          <div class="stage-tag" data-i18n="stageTag"></div>
+          <div class="hw-live">HEARTWARE <b id="hwLive">0</b></div>
         </div>
         <div class="avatar-wrap">
           <div class="avatar" id="avatar"></div>
-          <div class="bubble" id="bubble"></div>
         </div>
+        <div class="bubble" id="bubble"></div>
       </header>
 
       <div class="love-hud" id="loveHud">
@@ -47,7 +51,7 @@
           <span class="lv-val" id="lvVal">LV. 01</span>
         </div>
         <div class="gauge-box">
-          <div class="gauge-top"><span class="lbl">ハートゲージ</span><span class="gauge-text" id="gaugeText">0 / 300</span></div>
+          <div class="gauge-top"><span class="lbl" data-i18n="gaugeLabel"></span><span class="gauge-text" id="gaugeText">0 / 300</span></div>
           <div class="gauge" id="gauge"><div class="gauge-fill" id="gaugeFill"></div><div class="gauge-gloss"></div></div>
         </div>
       </div>
@@ -65,12 +69,12 @@
       </main>
 
       <footer class="controls">
-        <button class="icon-btn" id="btnSound" aria-label="サウンド">
+        <button class="icon-btn" id="btnSound" data-i18n-aria="sound">
           <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <svg viewBox="0 0 24 24" class="ic-off"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <span class="hint">ドラッグして離すとドロップ</span>
-        <button class="icon-btn" id="btnRestart" aria-label="リスタート">
+        <span class="hint" data-i18n="hint"></span>
+        <button class="icon-btn" id="btnRestart" data-i18n-aria="restart">
           <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </footer>
@@ -79,7 +83,7 @@
     <!-- 3. 결과 -->
     <section id="screen-result" class="result">
       <div class="result-card">
-        <div class="result-title">RESULT</div>
+        <div class="result-title">HEARTWARE UPDATE</div>
         <div class="result-badges">
           <span class="badge" id="resBest">NEW BEST!</span>
           <span class="badge special" id="resSpecial">SPECIAL LOVE</span>
@@ -91,15 +95,20 @@
           <div class="rm love"><span class="lbl"><span id="resMember">SEHA</span> LOVE</span><b>LV.<span id="resLv">1</span></b></div>
         </div>
         <p class="result-line" id="resLine"></p>
-        <div class="result-sub">届けたハート <b id="resHearts">0</b>個 ・ LOVE <b id="resLove">0</b></div>
+        <div class="result-sub" id="resHearts"></div>
+        <div class="result-hw"><span class="hw-tag">HEARTWARE</span> +<b id="resLove">0</b> → <span data-i18n="hwTotal"></span> <b id="resHwTotal">0</b> LOVE</div>
         <div class="result-btns">
-          <button class="btn primary" id="btnAgain">もう一回</button>
+          <button class="btn primary" id="btnAgain" data-i18n="again"></button>
           <a class="btn x" id="btnShare" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.2 2.3h3.4l-7.4 8.4 8.7 11.5h-6.8l-5.3-6.9-6.1 6.9H1.3l7.9-9L.9 2.3h7l4.8 6.3 5.5-6.3zm-1.2 17.9h1.9L7 4.2H5z"/></svg>
-            結果をシェア
+            <span data-i18n="share"></span>
           </a>
-          <button class="btn ghost" id="btnChange">推しを変える</button>
+          <button class="btn ghost" id="btnChange" data-i18n="change"></button>
         </div>
+        <a class="btn-home" id="btnHome" href="https://kzna-homepage-17280846291.asia-northeast3.run.app/ja" target="_blank" rel="noopener">
+          <span class="home-logo" aria-hidden="true"></span><span data-i18n="homepage"></span>
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </section>
   </div>
@@ -109,6 +118,8 @@
   <script src="vendor/matter.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/members.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lines.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/member-view.js"></script>
   <script src="js/board.js"></script>

@@ -16,11 +16,12 @@ HP.CONFIG = {
 
   physics: {
     gravity: 1.0,
-    restitution: 0.12,
-    friction: 0.35,
-    frictionStatic: 0.6,
-    frictionAir: 0.008,
+    restitution: 0.45,     // 튕김 (0 = 안 튕김, 1 = 완전 탄성)
+    friction: 0.12,        // 굴러가려면 약간의 마찰이 필요 (너무 낮으면 미끄러지기만 함)
+    frictionStatic: 0.18,  // 낮을수록 경사에서 쉽게 굴러 내려감
+    frictionAir: 0.0015,   // 낮을수록 오래 굴러감
     density: 0.0012,
+    mergePop: 2.4,         // 합성 직후 위로 튀어 오르는 힘
     stepMs: 1000 / 60
   },
 
@@ -73,8 +74,8 @@ HP.CONFIG = {
     durations: { happy: 650, cheer: 1500, heart: 1700, wink: 1500, special: 1900, celebrate: 2000 },
     // 레벨 도달 시 재생할 리액션. 7 이상은 모두 celebrate
     levelMap: { 2: 'happy', 3: 'cheer', 4: 'heart', 5: 'wink', 6: 'special', 7: 'celebrate' },
-    lineChanceOnHeart: 0.16,   // 하트 도착 시 짧은 대사가 나올 확률
-    lineCooldownMs: 2600
+    lineChanceOnHeart: 1,      // 하트 도착 시 대사가 나올 확률 (대사는 js/lines.js)
+    lineCooldownMs: 1300       // 말풍선 최소 간격 (연쇄 합성 때 겹치지 않게)
   },
 
   gameOver: {
@@ -84,6 +85,12 @@ HP.CONFIG = {
 
   // 게임 종료 후 비행 중인 하트를 기다리는 최대 시간 (초과 시 즉시 지급)
   endFlushTimeoutMs: 3200,
+
+  // 결과 화면 '공식 홈페이지' 버튼. 뒤에 /ko, /ja, /en 이 붙는다
+  homepage: 'https://kzna-homepage-17280846291.asia-northeast3.run.app',
+
+  // 접속 IP 국가 조회 API (응답 예: {"ip":"…","country":"KR"} 또는 "KR")
+  geoApi: 'https://api.country.is/',
 
   share: {
     hashtags: ['KZNA', 'KZNAHEARTPOP'],

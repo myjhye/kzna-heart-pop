@@ -320,8 +320,10 @@ window.HP = window.HP || {};
       M.Composite.remove(this.engine.world, b);
       var vanish = tier >= maxTier;
       if (!vanish) {
-        var vel = { x: (a.velocity.x + b.velocity.x) / 2, y: Math.min(0, (a.velocity.y + b.velocity.y) / 2) - 0.6 };
-        this.spawn(tier + 1, x, y, vel);
+        var vel = { x: (a.velocity.x + b.velocity.x) / 2, y: Math.min(0, (a.velocity.y + b.velocity.y) / 2) - this.cfg.physics.mergePop };
+        var nb = this.spawn(tier + 1, x, y, vel);
+        // 합쳐진 두 공의 회전을 이어받아 굴러가는 느낌을 유지
+        M.Body.setAngularVelocity(nb, (a.angularVelocity + b.angularVelocity) / 2);
       }
       this.mergeCount++;
       this.fx.push({ x: x, y: y, r: this.cfg.tiers[Math.min(tier + 1, maxTier)].r, t0: this.time, dur: 420, color: this.cfg.tiers[tier].dark });

@@ -30,7 +30,8 @@
     centerMsg: $('centerMsg'),
     fx: $('fx'),
     btnSound: $('btnSound'),
-    btnRestart: $('btnRestart')
+    btnRestart: $('btnRestart'),
+    hwLive: $('hwLive')
   };
 
   /* ---------- 저장 ---------- */
@@ -48,9 +49,22 @@
   var pendingLevelUp = 0;
   var endingAt = 0;
   var gaugeView = { level: 1, value: 0 };
+  var hwBase = 0;          // 이번 판 시작 전까지 쌓인 HEARTWARE (멤버별 누적 LOVE)
+  var hwCommitted = true;  // 이번 판 LOVE를 누적에 반영했는지
   var loopLast = performance.now();
 
   function newLove() { return { level: 1, gauge: 0, total: 0, hearts: 0 }; }
+
+  /* HEARTWARE: 판이 끝나도 사라지지 않고 멤버별로 계속 쌓이는 팬 데이터 */
+  function loadHW(id) { return Object.assign({ love: 0, hearts: 0, plays: 0 }, load('hp_hw_' + id, {})); }
+  function commitHW() {
+    if (hwCommitted || !member || !love) return;
+    hwCommitted = true;
+    var hw = loadHW(member.id);
+    hw.love += love.total; hw.hearts += love.hearts; hw.plays += 1;
+    save('hp_hw_' + member.id, hw);
+    hwBase = hw.love - love.total;
+  }
 
   /* LOVE 지급: 초과분은 다음 레벨로 이월 */
   function addLove(points) {
@@ -109,9 +123,11 @@
       HP.Audio.arrive();
       memberView.pulse();
       els.gauge.classList.remove('hit'); void els.gauge.offsetWidth; els.gauge.classList.add('hit');
+      var hl = els.hwLive.parentNode; hl.classList.remove('tick'); void hl.offsetWidth; hl.classList.add('tick');
       if (!ups.length) {
+        // 하트가 닿으면 레벨에 맞는 대사를 랜덤으로 (말풍선이 겹치지 않게 쿨다운)
         var line = null;
-        if (Math.random() < CFG.reactions.lineChanceOnHeart && memberView.canSay()) line = HP.lineFor(member, 'happy');
+        if (Math.random() < CFG.reactions.lineChanceOnHeart && memberView.canSay()) line = HP.heartLine(member, love.level);
         memberView.react('happy', { line: line });
       }
     }
@@ -126,8 +142,8 @@
     var map = CFG.reactions.levelMap;
     var st = map[Math.min(lv, 7)] || 'celebrate';
     memberView.setLevel(lv);
-    memberView.react(st, { priority: 3, duration: CFG.reactions.durations[st] + 300, line: HP.lineFor(member, st === 'happy' ? 'happy' : st) });
-    showBanner('レベルアップ！', 'LV. ' + pad2(lv));
+    memberView.react(st, { priority: 3, duration: CFG.reactions.durations[st] + 300, line: HP.reactionLine(member, st) });
+    showBanner(HP.t('levelUp'), 'HEARTWARE LV. ' + pad2(lv));
     HP.Audio.levelUp();
     els.stage.classList.toggle('aura', lv >= 7);
     els.stage.style.setProperty('--aura', Math.min(1, (lv - 6) * 0.35));
@@ -165,6 +181,7 @@
     els.gaugeFill.style.width = (Math.max(0, Math.min(1, gaugeView.value / need)) * 100).toFixed(2) + '%';
     els.gaugeText.textContent = fmt(gaugeView.value) + ' / ' + fmt(need);
     els.lvVal.textContent = 'LV. ' + pad2(gaugeView.level);
+    els.hwLive.textContent = fmt(hwBase + love.total);
   }
 
   function resizeBoard() {
@@ -184,11 +201,13 @@
       b.className = 'member-card';
       b.style.setProperty('--mc', m.color);
       var bestLv = load('hp_love_' + m.id, 0);
+      var hwc = loadHW(m.id);
       var art = (m.images && m.images.idle)
         ? '<img class="av-img" src="' + m.images.idle + '" alt="">'
         : HP.avatarSVG(m, 's' + i);
       b.innerHTML = '<div class="card-art">' + art + '</div>' +
-        '<div class="card-name">' + m.name + '<small>' + m.kana + '</small></div>' +
+        '<div class="card-name">' + m.name + (HP.memberLocalName(m) ? '<small>' + HP.memberLocalName(m) + '</small>' : '') + '</div>' +
+        '<div class="card-hw">HEARTWARE <b>' + fmt(hwc.love) + '</b></div>' +
         (bestLv ? '<div class="card-best">BEST LOVE LV.' + bestLv + '</div>' : '');
       var svg = b.querySelector('.card-art svg');
       if (svg) HP.applyPose(svg, 'happy', 2);
@@ -198,9 +217,14 @@
   }
 
   function startGame(m) {
+    // 도중에 다시 시작해도 날아가던 하트까지 HEARTWARE에 남긴다
+    if (state === 'playing' || state === 'ending') HP.Hearts.flushAll();
+    commitHW();
     member = m || member;
+    hwBase = loadHW(member.id).love;
+    hwCommitted = false;
     els.app.style.setProperty('--mc', member.color);
-    els.memberName.innerHTML = member.name + ' <span>·</span> ' + member.kana;
+    setMemberName();
     memberView = new HP.MemberView(els.avatar, member, els.bubble);
     els.stage.classList.toggle('has-img', memberView.useImages);
     score = 0;
@@ -213,14 +237,16 @@
     board.reset();
     show(els.game);
     state = 'playing';
+    HP.Audio.bgmStart();
     requestAnimationFrame(function () {
       resizeBoard();
       updateScore();
       updateGauge(0);
       board.drawPreview(els.next, board.next);
     });
-    showCenter('ハートを届けよう！', 1500);
-    memberView.react('happy', { duration: 1200, line: HP.lineFor(member, 'happy') });
+    showCenter(HP.t('connect'), 900);
+    setTimeout(function () { if (state === 'playing') showCenter(HP.t('start'), 1200); }, 950);
+    memberView.react('happy', { duration: 1200, line: HP.reactionLine(member, 'happy') });
   }
 
   function showCenter(text, ms) {
@@ -235,8 +261,9 @@
     if (state !== 'playing') return;
     state = 'ending';
     endingAt = performance.now();
+    HP.Audio.bgmStop(1.2);
     HP.Audio.finish();
-    showCenter('FINISH!', 1600);
+    showCenter(HP.t('finish'), 1600);
   }
 
   /* 비행 중인 하트가 모두 도착(또는 타임아웃)한 뒤 결과 표시 */
@@ -262,12 +289,13 @@
     var prevLv = load('hp_love_' + member.id, 0);
     if (love.level > prevLv) save('hp_love_' + member.id, love.level);
     updateScore();
+    commitHW();
+    $('resHwTotal').textContent = fmt(hwBase + love.total);
 
     $('resScore').textContent = fmt(score);
     $('resMember').textContent = member.name;
     $('resLv').textContent = love.level;
     $('resLine').textContent = 'SCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level;
-    $('resHearts').textContent = fmt(love.hearts);
     $('resLove').textContent = fmt(love.total);
     $('resBest').classList.toggle('show', isBest);
     $('resSpecial').classList.toggle('show', love.level >= 7);
@@ -275,14 +303,15 @@
     var view = new HP.MemberView(art, member, null);
     view.setLevel(love.level);
     view.apply(love.level >= 6 ? 'special' : love.level >= 4 ? 'heart' : 'happy');
-    $('resQuote').textContent = '「' + HP.lineFor(member, love.level >= 6 ? 'special' : love.level >= 3 ? 'heart' : 'happy') + '」';
-    updateShareLink();
+    resultQuote = HP.reactionLine(member, love.level >= 6 ? 'special' : love.level >= 3 ? 'heart' : 'happy');
+    fillResultText();
     els.result.classList.add('show');
   }
 
   /* X 공유 링크 (window.open 대신 일반 링크 — 임베드/샌드박스 환경에서도 동작) */
   function updateShareLink() {
-    var text = 'KZNA HEART POP\nSCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level + '\n' + member.kana + 'にハートを' + fmt(love.hearts) + '個届けたよ！';
+    var text = 'KZNA HEART POP\nSCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level + '\n' +
+      HP.t('shareText', { name: HP.memberLocalName(member) || member.name, n: fmt(love.hearts), total: fmt(hwBase + love.total) });
     var inFrame = false;
     try { inFrame = window.top !== window; } catch (e) { inFrame = true; }
     var url = CFG.share.url || (!inFrame && location.protocol.indexOf('http') === 0 ? location.href.split('#')[0] : '');
@@ -290,6 +319,43 @@
     if (url) q += '&url=' + encodeURIComponent(url);
     $('btnShare').href = 'https://twitter.com/intent/tweet?' + q;
   }
+
+  /* ---------- 다국어 ---------- */
+  var resultQuote = '';
+
+  function setMemberName() {
+    if (!member) return;
+    var local = HP.memberLocalName(member);
+    els.memberName.innerHTML = member.name + (local ? ' <span>·</span> ' + local : '');
+  }
+
+  // 결과 화면 중 언어에 따라 바뀌는 부분
+  function fillResultText() {
+    if (!member || !love) return;
+    $('resHearts').innerHTML = HP.t('heartsSent', { n: fmt(love.hearts) });
+    $('resQuote').textContent = resultQuote ? HP.t('quote', { t: resultQuote }) : '';
+    $('btnHome').href = HP.homepageUrl();
+    updateShareLink();
+  }
+
+  function applyLang() {
+    var nodes = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < nodes.length; i++) nodes[i].textContent = HP.t(nodes[i].getAttribute('data-i18n'));
+    nodes = document.querySelectorAll('[data-i18n-aria]');
+    for (i = 0; i < nodes.length; i++) nodes[i].setAttribute('aria-label', HP.t(nodes[i].getAttribute('data-i18n-aria')));
+    var btns = document.querySelectorAll('#langSwitch button');
+    for (i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].getAttribute('data-lang') === HP.lang);
+    $('btnHome').href = HP.homepageUrl();
+    setMemberName();
+    if (state === 'select') buildSelect();
+    if (state === 'result') fillResultText();
+  }
+
+  HP.onLangChange(applyLang);
+  $('langSwitch').addEventListener('click', function (e) {
+    var l = e.target.getAttribute && e.target.getAttribute('data-lang');
+    if (l) { HP.Audio.tap(); HP.setLang(l, true); }
+  });
 
   /* ---------- 입력 ---------- */
   var holding = false;
@@ -332,6 +398,7 @@
   $('btnChange').addEventListener('click', function () {
     HP.Audio.tap();
     els.result.classList.remove('show');
+    commitHW();
     HP.Hearts.clear();
     state = 'select';
     buildSelect();
@@ -362,6 +429,7 @@
   }
 
   buildSelect();
+  applyLang();
   updateScore();
   requestAnimationFrame(frame);
 

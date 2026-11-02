@@ -5,20 +5,12 @@
  * - 실제 일러스트가 준비되면 images 에 표정별 경로를 넣으면 된다.
  *   예) images: { idle: 'assets/members/seha/idle.webp', happy: 'assets/members/seha/happy.webp', ... }
  *   비어 있는 상태는 idle 이미지로, idle 도 없으면 임시 캐릭터로 표시된다.
- * - lines 는 캐릭터 성격에 맞게 자유롭게 교체한다. 비어 있는 상태는 DEFAULT_LINES 를 쓴다.
+ * - lines 는 레벨업 리액션 대사(일본어 전용 덮어쓰기). 다국어 기본 대사는 js/i18n.js 의 REACTION_LINES,
+ *   하트 도착 대사는 js/lines.js 에 있다.
  */
 window.HP = window.HP || {};
 
 HP.REACTION_STATES = ['idle', 'happy', 'cheer', 'heart', 'wink', 'celebrate', 'special'];
-
-HP.DEFAULT_LINES = {
-  happy:     ['ありがとう！', 'とどいたよ！', 'うれしい！'],
-  cheer:     ['すごい！', 'その調子！', 'もっといけるよ！'],
-  heart:     ['大好き！', 'ハート、受け取ったよ！'],
-  wink:      ['ふふっ、見てた？', 'ちゃんと届いてるよ♪'],
-  special:   ['ずっと一緒にいてね！', 'あなたが一番！'],
-  celebrate: ['最高！ありがとう！', '胸がいっぱいだよ！']
-};
 
 HP.MEMBERS = [
   {
@@ -35,10 +27,10 @@ HP.MEMBERS = [
       celebrate: 'assets/members/seha/celebrate.webp'
     },
     lines: {
-      happy: ['ありがとう！', 'とどいたよ！'],
+      happy: ['ありがとう！', 'ハート、届いたよ'],
       cheer: ['すごい！', 'もっといけるよ！'],
-      heart: ['大好き！'],
-      special: ['ずっと一緒にいてね！']
+      heart: ['大好き…って、こういうこと？'],
+      special: ['あなたのハートで、わたしができてる']
     }
   },
   {
@@ -55,10 +47,10 @@ HP.MEMBERS = [
       celebrate: 'assets/members/hina/celebrate.webp'
     },
     lines: {
-      happy: ['やったー！', 'ありがとう！'],
-      cheer: ['すごいすごい！', 'その調子！'],
-      heart: ['大好き！'],
-      celebrate: ['最高！ありがとう！']
+      happy: ['やったー！受信完了！', 'ありがとう！'],
+      cheer: ['すごいすごい！もっともっと！', 'その調子！'],
+      heart: ['大好き！…あ、言えた！'],
+      celebrate: ['HEARTWARE、あふれそう！']
     }
   },
   {
@@ -75,9 +67,10 @@ HP.MEMBERS = [
       celebrate: 'assets/members/rena/celebrate.webp'
     },
     lines: {
-      happy: ['ありがとう。', 'ちゃんと届いたよ。'],
+      happy: ['…受信。ありがとう。', 'ちゃんと届いたよ。'],
       cheer: ['すごい！', 'まだいけるでしょ？'],
-      wink: ['ふふっ、見てた？']
+      wink: ['ふふっ、データ以上だね'],
+      special: ['こんな気持ち、知らなかった']
     }
   },
   {
@@ -94,15 +87,9 @@ HP.MEMBERS = [
       celebrate: 'assets/members/mio/celebrate.webp'
     },
     lines: {
-      happy: ['ありがとう！', 'うれしい！'],
+      happy: ['うれしい…あったかい', 'ありがとう！'],
       cheer: ['もっといけるよ！'],
-      heart: ['大好きだよ！']
+      heart: ['これが、好き？']
     }
   }
 ];
-
-HP.lineFor = function (member, state) {
-  var list = (member.lines && member.lines[state]) || HP.DEFAULT_LINES[state];
-  if (!list || !list.length) return '';
-  return list[Math.floor(Math.random() * list.length)];
-};

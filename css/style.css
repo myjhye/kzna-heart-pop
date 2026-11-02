@@ -10,7 +10,7 @@
   --glass: rgba(255, 255, 255, 0.62);
   --line: rgba(120, 150, 200, 0.35);
   --mc: #6fb8ff;
-  --font-jp: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-jp: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --font-num: "Outfit", "M PLUS Rounded 1c", system-ui, sans-serif;
 }
 
@@ -135,12 +135,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 @keyframes dance { 0%,100% { transform: rotate(0) translateY(0); } 25% { transform: rotate(-4deg) translateY(-4px); } 75% { transform: rotate(4deg) translateY(-4px); } }
 
 .bubble {
-  position: absolute; left: 82%; top: 14%; z-index: 3;
-  white-space: nowrap; padding: 6px 11px; border-radius: 14px 14px 14px 4px;
-  background: #fff; color: var(--ink); font-size: 13px; font-weight: 800;
+  position: absolute; right: 10px; top: 12px; z-index: 3;
+  max-width: 40%; padding: 7px 11px; border-radius: 14px 14px 4px 14px;
+  background: #fff; color: var(--ink); font-size: 12.5px; font-weight: 800; line-height: 1.4;
   box-shadow: 0 4px 12px rgba(60,100,170,.2); border: 1.5px solid var(--pink-soft);
   opacity: 0; transform: translateY(6px) scale(.9); transition: opacity .2s, transform .2s;
-  pointer-events: none;
+  pointer-events: none; word-break: keep-all; overflow-wrap: anywhere;
 }
 .bubble.show { opacity: 1; transform: none; }
 
@@ -303,4 +303,46 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   .lv-val { font-size: 20px; }
   .stat .num { font-size: 16px; }
   .controls { height: 40px; }
+}
+
+/* ---------- HEARTWARE (누적 세계관) ---------- */
+.hw-live {
+  margin-top: 4px; display: inline-flex; align-items: baseline; gap: 5px;
+  font-family: var(--font-num); font-size: 9px; font-weight: 700; letter-spacing: .14em; color: var(--ink-soft);
+  padding: 2px 8px; border-radius: 99px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.9);
+}
+.hw-live b { font-size: 12px; letter-spacing: .02em; color: var(--pink); font-variant-numeric: tabular-nums; }
+.hw-live.tick b { animation: hwTick .35s ease-out; }
+@keyframes hwTick { 40% { color: #ff1f7f; text-shadow: 0 0 8px rgba(255,80,160,.7); } }
+.card-hw { margin-top: 3px; font-family: var(--font-num); font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--ink-soft); }
+.card-hw b { color: var(--pink); font-size: 12px; letter-spacing: .02em; }
+.result-hw {
+  margin-top: 6px; padding: 7px 10px; border-radius: 12px; font-size: 12px; color: var(--ink-soft);
+  background: linear-gradient(90deg, rgba(255,95,168,.1), rgba(143,216,255,.14)); border: 1px solid rgba(255,255,255,.9);
+}
+.result-hw b { color: var(--ink); font-family: var(--font-num); font-size: 14px; }
+.hw-tag { font-family: var(--font-num); font-weight: 800; letter-spacing: .12em; font-size: 10px; color: var(--pink); }
+
+/* ---------- 언어 전환 / 홈페이지 버튼 ---------- */
+.lang-switch {
+  position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; z-index: 5;
+  display: flex; padding: 3px; gap: 2px; border-radius: 99px;
+  background: rgba(255,255,255,.75); border: 1px solid #fff; box-shadow: 0 3px 10px rgba(60,100,170,.15);
+}
+.lang-switch button {
+  font-family: var(--font-num); font-size: 11px; font-weight: 800; letter-spacing: .06em;
+  padding: 5px 9px; border-radius: 99px; color: var(--ink-soft);
+}
+.lang-switch button.on { color: #fff; background: linear-gradient(90deg, #ff6fb0, #8fb8ff); }
+.btn-home {
+  margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 12px; border-radius: 14px; text-decoration: none;
+  font-size: 13px; font-weight: 800; color: var(--ink);
+  background: linear-gradient(180deg, #ffffff, #e8f0fb); border: 1px solid rgba(130,160,210,.45);
+}
+.btn-home:active { transform: scale(.98); }
+.home-logo {
+  width: 44px; aspect-ratio: 1200 / 313; background: var(--ink);
+  -webkit-mask: url(../assets/kzna-logo.png) center / contain no-repeat;
+          mask: url(../assets/kzna-logo.png) center / contain no-repeat;
 }
