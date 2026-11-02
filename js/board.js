@@ -493,7 +493,7 @@ window.HP = window.HP || {};
       var q = (t - tx.t0) / tx.dur;
       c.save();
       c.globalAlpha = q < 0.7 ? 1 : 1 - (q - 0.7) / 0.3;
-      c.font = '400 18px "Dela Gothic One", "Black Han Sans", sans-serif';
+      c.font = '400 18px "Mochiy Pop One", "Jua", sans-serif';
       c.textAlign = 'center';
       c.lineJoin = 'round';
       c.lineWidth = 5; c.strokeStyle = '#1e2a47';

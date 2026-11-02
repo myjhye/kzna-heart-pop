@@ -45,7 +45,7 @@ HP.I18N = {
   },
   ko: {
     htmlLang: 'ko',
-    selectSub: '당신의 하트로, 그녀들의 마음이 만들어져요.',
+    selectSub: '당신의 하트가 모여 그녀들의 마음이 돼요.',
     selectTitle: '최애를 골라 줘!',
     selectFoot: '합체 → 하트가 최애에게 → HEARTWARE에 축적 → LOVE LEVEL UP',
     stageTag: '최애에게 하트를 보내자!',
@@ -54,16 +54,16 @@ HP.I18N = {
     sound: '사운드',
     restart: '다시 시작',
     connect: 'HEARTWARE 접속!',
-    start: '하트를 보내자!',
+    start: '하트를 보내 줘!',
     finish: 'FINISH!',
     levelUp: '레벨 업!',
     heartsSent: '♥{n}개',
     hwTotal: '누적',
-    again: '한 번 더',
+    again: '한 판 더',
     share: '결과 공유',
     change: '최애 바꾸기',
     homepage: '공식 홈페이지',
-    shareText: '{name}의 HEARTWARE에 하트를 {n}개 보냈어!（누적 {total} LOVE）',
+    shareText: '{name}의 HEARTWARE에 하트 {n}개 보냈어! (누적 {total} LOVE)',
     quote: '“{t}”',
     how1: '합체',
     how2: '하트 전송',
@@ -126,12 +126,12 @@ HP.REACTION_LINES = {
     celebrate: ['HEARTWARE、あふれそう！', 'これが「好き」なんだね！']
   },
   ko: {
-    happy:     ['하트, 수신했어!', '고마워!', '또 따뜻해졌어'],
-    cheer:     ['HEARTWARE가 움직이고 있어…!', '더 보내 줘!', '더 할 수 있어!'],
-    heart:     ['이게… 좋아한다는 마음?', '좋아해, 라고 말해 보고 싶었어'],
-    wink:      ['후훗, 잘 도착하고 있어', '너에 대해, 기억했어♪'],
-    special:   ['네 하트로 마음이 만들어지고 있어', '계속 함께 있어 줘!'],
-    celebrate: ['HEARTWARE가 넘칠 것 같아!', '이게 \'좋아한다\'는 거구나!']
+    happy:     ['하트 받았다!', '고마워~', '헤헤, 따뜻해'],
+    cheer:     ['HEARTWARE가 깨어나는 중!', '더 보내 줘!', '이 기세로 가자!'],
+    heart:     ['이게… 좋아한다는 거야?', '좋아해, 꼭 말해 보고 싶었어'],
+    wink:      ['헤헤, 잘 받고 있어', '너, 기억했어♪'],
+    special:   ['네 하트로 내 마음이 생겨나', '계속 같이 있어 줘!'],
+    celebrate: ['HEARTWARE가 넘칠 것 같아!', '이게 사랑이구나!']
   },
   en: {
     happy:     ['Heart received!', 'Thank you!', 'I feel warmer again'],

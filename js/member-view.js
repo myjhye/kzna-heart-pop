@@ -164,7 +164,7 @@ window.HP = window.HP || {};
     this.el.classList.remove('react');
     void this.el.offsetWidth;
     this.el.classList.add('react');
-    if (opts.line) this.say(opts.line, Math.max(dur, 1200));
+    if (opts.line) this.say(opts.line, Math.max(dur, 1700));
     return true;
   };
 

@@ -13,16 +13,19 @@
   --mc: #6fb8ff;         /* 선택한 멤버 컬러 (JS에서 설정) */
   --line: 3px;
   --pop: 0 4px 0 var(--ink);
-  --f-display: "Mochiy Pop One", "Black Han Sans", "M PLUS Rounded 1c", sans-serif;   /* 일본 모바일게임식 굵은 팝 */
-  --f-hand: "Hachi Maru Pop", "Gaegu", "M PLUS Rounded 1c", cursive;                /* 프리쿠라 손글씨 */
+  /* 글꼴: 귀엽지만 크고 선명하게
+     - 제목 · 숫자: Mochiy Pop One (일본 모바일게임식 굵은 팝) / 한글은 주아체
+     - 본문 · 말풍선: M PLUS Rounded 1c 800 / 한글은 주아체 */
+  --f-display: "Mochiy Pop One", "Jua", "M PLUS Rounded 1c", sans-serif;
+  --f-hand: "M PLUS Rounded 1c", "Jua", "Hiragino Maru Gothic ProN", sans-serif;
   --hanko: #e8383d;
-  --f-body: "M PLUS Rounded 1c", "Noto Sans KR", "Hiragino Maru Gothic ProN", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-body: "M PLUS Rounded 1c", "Jua", "Hiragino Maru Gothic ProN", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
 body {
-  font-family: var(--f-body);
+  font-family: var(--f-body); font-weight: 800;
   color: var(--ink);
   background-color: var(--ice);
   background-image: radial-gradient(rgba(30, 42, 71, .09) 1.2px, transparent 1.3px);
@@ -75,9 +78,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   font-family: var(--f-display); font-size: 12px; color: #fff; background: var(--ink);
   clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%);
 }
-.title-copy { margin: 10px 0 0; font-size: 13px; font-weight: 800; color: var(--ink-soft); }
+.title-copy { margin: 10px 0 0; font-size: 14px; font-weight: 800; color: var(--ink-soft); }
 
-.pick { margin: 4px 0 0; font-family: var(--f-display); font-weight: 400; font-size: 20px; }
+.pick { margin: 4px 0 0; font-family: var(--f-display); font-weight: 400; font-size: 21px; }
 
 .member-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 14px; padding: 6px 4px 0; }
 /* チェキ: 흰 프레임 + 아래 넓은 여백 + 마스킹테이프 */
@@ -105,8 +108,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 }
 .card-art img, .card-art svg { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 0; }
 .card-cap { display: flex; align-items: baseline; justify-content: center; gap: 6px; padding: 7px 4px 9px; }
-.card-name { font-family: var(--f-display); font-size: 16px; line-height: 1.1; }
-.card-sign { font-family: var(--f-hand); font-size: 14px; color: var(--pink); transform: rotate(-4deg); }
+.card-name { font-family: var(--f-display); font-size: 17px; line-height: 1.1; }
+.card-sign { font-family: var(--f-hand); font-weight: 800; font-size: 13px; color: var(--pink); }
 .card-hw {
   position: absolute; left: 6px; top: 6px;
   display: flex; align-items: center; gap: 4px; padding: 2px 7px 2px 6px;
@@ -123,7 +126,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 }
 .card-best small { font-size: 6.5px; letter-spacing: .05em; }
 
-.how { list-style: none; margin: 4px 0 0; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: var(--ink-soft); }
+.how { list-style: none; margin: 4px 0 0; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800; color: var(--ink-soft); }
 .how li { display: flex; align-items: center; gap: 4px; }
 .how li + li::before { content: ""; width: 14px; height: 2.5px; margin-right: 2px; background: var(--ink-soft); border-radius: 2px; }
 .how-ic { width: 16px; height: 16px; border: 2.5px solid var(--ink); border-radius: 50%; flex: none; }
@@ -164,10 +167,10 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   font-family: var(--f-display); font-size: 17px; line-height: 1; padding: 6px 10px 5px;
   background: var(--paper); border: 2.5px solid var(--ink); border-radius: 10px; box-shadow: 0 3px 0 var(--ink);
 }
-.member-name small { margin-left: 5px; font-family: var(--f-body); font-size: 12px; font-weight: 800; color: var(--ink-soft); }
+.member-name small { margin-left: 5px; font-family: var(--f-body); font-size: 14px; font-weight: 800; color: var(--ink-soft); }
 .hw-live {
   display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px 3px 7px;
-  font-size: 9.5px; font-weight: 800; letter-spacing: .04em;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .04em;
   background: var(--ink); color: #fff; border-radius: 99px;
 }
 .hw-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 2px rgba(255,79,154,.35); animation: beat 1.1s ease-in-out infinite; }
@@ -203,12 +206,13 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 @keyframes dance { 25% { transform: rotate(-3deg) translateY(-4px); } 75% { transform: rotate(3deg) translateY(-4px); } }
 
 .bubble {
-  position: absolute; right: 10px; top: 54px; z-index: 3; max-width: 38%;
-  padding: 7px 10px; border-radius: 14px 14px 14px 4px;
-  background: var(--paper); border: 2.5px solid var(--ink); box-shadow: 0 3px 0 var(--ink);
-  font-family: var(--f-hand); font-size: 13px; line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere;
-  opacity: 0; transform: translateY(6px) scale(.9); transform-origin: 0 100%;
-  transition: opacity .18s, transform .22s cubic-bezier(.3,1.6,.5,1); pointer-events: none;
+  position: absolute; right: 8px; bottom: 10px; z-index: 3; max-width: 44%;   /* 얼굴을 가리지 않게 어깨 옆 */
+  padding: 9px 13px 8px; border-radius: 16px 16px 16px 4px;
+  background: var(--paper); border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink);
+  font-family: var(--f-hand); font-weight: 800; font-size: 17px; line-height: 1.35; color: var(--ink);
+  word-break: keep-all; overflow-wrap: anywhere;
+  opacity: 0; transform: translateY(8px) scale(.85); transform-origin: 0 100%;
+  transition: opacity .18s, transform .25s cubic-bezier(.3,1.6,.5,1); pointer-events: none;
 }
 .bubble.show { opacity: 1; transform: none; }
 
@@ -243,10 +247,10 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 /* 점수 줄: 카드 없이 숫자만 */
 .scoreline { flex: none; display: flex; align-items: center; gap: 14px; padding: 0 4px; }
 .sc { display: flex; align-items: baseline; gap: 6px; }
-.sc-lbl { font-size: 11px; font-weight: 800; color: var(--ink-soft); }
+.sc-lbl { font-size: 13px; font-weight: 800; color: var(--ink-soft); }
 .sc-num { font-family: var(--f-display); }
 .sc-score .sc-num { font-size: 26px; line-height: 1; }
-.sc-best .sc-num { font-size: 14px; color: var(--ink-soft); }
+.sc-best .sc-num { font-size: 16px; color: var(--ink-soft); }
 .sc-next { margin-left: auto; align-items: center; }
 #nextCanvas {
   width: 38px; height: 38px; border-radius: 50%;
@@ -313,9 +317,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .res-art img, .res-art svg { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
 .res-quote {
   margin: 0; padding: 7px 4px 4px; min-height: 30px;
-  font-family: var(--f-hand); font-size: 13px; line-height: 1.35; color: var(--ink);
+  font-family: var(--f-hand); font-weight: 800; font-size: 15px; line-height: 1.4; color: var(--ink);
 }
-.res-member { display: block; padding: 0 0 8px; font-family: var(--f-hand); font-size: 12px; color: var(--pink); text-align: right; padding-right: 6px; }
+.res-member { display: block; padding: 0 0 8px; font-family: var(--f-display); font-size: 12px; color: var(--pink); text-align: right; padding-right: 6px; }
 /* LOVE 레벨 판코(도장) */
 .hanko {
   position: absolute; right: -30px; top: 112px; width: 76px; height: 76px; border-radius: 50%;
@@ -339,10 +343,10 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px 9px;
   border: 2.5px solid var(--ink); border-radius: 16px; background: #f2f7fd;
 }
-.rs-lbl { font-size: 11px; font-weight: 800; color: var(--ink-soft); }
-.rs-num { font-family: var(--f-display); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.rs-lbl { font-size: 13px; font-weight: 800; color: var(--ink-soft); }
+.rs-num { font-family: var(--f-display); font-weight: 400; font-size: 26px; line-height: 1.1; }
 .rs-hw .rs-num { color: var(--pink); }
-.rs-sub { font-size: 10.5px; font-weight: 700; color: var(--ink-soft); }
+.rs-sub { font-size: 12px; font-weight: 800; color: var(--ink-soft); }
 /* NEW! 별 터짐 배지 */
 .res-best {
   display: none; position: absolute; top: -26px; right: -14px; width: 66px; height: 66px;
@@ -357,17 +361,17 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .btn {
   display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;
   border: var(--line) solid var(--ink); border-radius: 16px; box-shadow: var(--pop);
-  font-family: var(--f-display); font-size: 15px; transition: transform .08s, box-shadow .08s;
+  font-family: var(--f-display); font-size: 16px; transition: transform .08s, box-shadow .08s;
 }
 .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--ink); }
-.btn-main { width: 100%; margin-top: 16px; padding: 14px; font-size: 19px; background: var(--pink); color: #fff; -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; }
+.btn-main { width: 100%; margin-top: 16px; padding: 14px; font-size: 21px; background: var(--pink); color: #fff; text-shadow: 0 2px 0 rgba(30,42,71,.35); }
 .btn-row { margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .btn-x { padding: 11px 8px; background: var(--ink); color: #fff; }
 .btn-sub { padding: 11px 8px; background: var(--paper); color: var(--ink); }
 
 .home {
   margin: 14px auto 0; width: fit-content; display: flex; align-items: center; gap: 7px; padding: 6px 4px;
-  font-size: 12px; font-weight: 800; color: var(--ink-soft); text-decoration: none;
+  font-size: 13.5px; font-weight: 800; color: var(--ink-soft); text-decoration: none;
 }
 .home-logo {
   width: 46px; aspect-ratio: 1200 / 313; background: var(--ink);
@@ -377,6 +381,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
 /* 작은 화면 */
 @media (max-height: 680px) {
+  .bubble { font-size: 15px; bottom: 8px; }
   .title { margin-top: 40px; }
   .title-logo { width: 120px; }
   .stage { height: 138px; }
