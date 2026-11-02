@@ -106,6 +106,19 @@ window.HP = window.HP || {};
       c.globalCompositeOperation = 'source-over';
     },
     kzna: function (c, s) {
+      // 공식 로고가 로드되어 있으면 은색 구슬 위에서 잘 보이도록 남색으로 칠해 사용
+      var img = HP.logoImg;
+      if (img && img.complete && img.naturalWidth) {
+        var w = s * 2.3, h = w * img.naturalHeight / img.naturalWidth;
+        var tmp = document.createElement('canvas');
+        tmp.width = img.naturalWidth; tmp.height = img.naturalHeight;
+        var tc = tmp.getContext('2d');
+        tc.drawImage(img, 0, 0);
+        tc.globalCompositeOperation = 'source-in';
+        tc.fillStyle = '#2c3d63'; tc.fillRect(0, 0, tmp.width, tmp.height);
+        c.drawImage(tmp, -w / 2, -h / 2 - s * 0.02, w, h);
+        return;
+      }
       c.font = 'italic 700 ' + Math.round(s * 0.95) + 'px "Times New Roman", Georgia, serif';
       c.textAlign = 'center'; c.textBaseline = 'middle';
       c.fillText('kzna', 0, -s * 0.05);
@@ -176,6 +189,10 @@ window.HP = window.HP || {};
     return { canvas: cv, half: r + pad };
   }
 
+  // 공식 로고 미리 로드 (최종 티어 아이템 문양)
+  HP.logoImg = new Image();
+  HP.logoImg.src = 'assets/kzna-logo.png';
+
   /* ---------- 게임판 ---------- */
   function Board(canvas, hooks) {
     this.canvas = canvas;
@@ -203,6 +220,10 @@ window.HP = window.HP || {};
     M.Events.on(this.engine, 'collisionActive', collect);
     this.buildWalls();
     this.reset();
+    // 로고가 늦게 로드되면 스프라이트를 다시 만든다
+    HP.logoImg.addEventListener('load', function () {
+      if (self.scale) self.sprites = self.cfg.tiers.map(function (t) { return makeSprite(t, self.scale); });
+    });
   }
 
   Board.prototype.buildWalls = function () {
