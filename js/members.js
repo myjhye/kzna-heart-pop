@@ -65,7 +65,15 @@ HP.MEMBERS = [
     id: 'rena', name: 'RENA', kana: 'レナ',
     color: '#a58cff', hair: '#1f2236', iris: '#7a5fd8',
     hairStyle: 'long', accessory: 'band',
-    images: {},
+    images: {
+      idle: 'assets/members/rena/idle.webp',
+      happy: 'assets/members/rena/happy.webp',
+      cheer: 'assets/members/rena/cheer.webp',
+      heart: 'assets/members/rena/heart.webp',
+      wink: 'assets/members/rena/wink.webp',
+      special: 'assets/members/rena/special.webp',
+      celebrate: 'assets/members/rena/celebrate.webp'
+    },
     lines: {
       happy: ['ありがとう。', 'ちゃんと届いたよ。'],
       cheer: ['すごい！', 'まだいけるでしょ？'],
