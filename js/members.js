@@ -76,7 +76,15 @@ HP.MEMBERS = [
     id: 'mio', name: 'MIO', kana: 'ミオ',
     color: '#5fd8c4', hair: '#c9cfe0', iris: '#2f9f8f',
     hairStyle: 'bob', accessory: 'clip',
-    images: {},
+    images: {
+      idle: 'assets/members/mio/idle.webp',
+      happy: 'assets/members/mio/happy.webp',
+      cheer: 'assets/members/mio/cheer.webp',
+      heart: 'assets/members/mio/heart.webp',
+      wink: 'assets/members/mio/wink.webp',
+      special: 'assets/members/mio/special.webp',
+      celebrate: 'assets/members/mio/celebrate.webp'
+    },
     lines: {
       happy: ['ありがとう！', 'うれしい！'],
       cheer: ['もっといけるよ！'],
