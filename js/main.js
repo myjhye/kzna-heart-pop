@@ -202,6 +202,7 @@
     els.app.style.setProperty('--mc', member.color);
     els.memberName.innerHTML = member.name + ' <span>·</span> ' + member.kana;
     memberView = new HP.MemberView(els.avatar, member, els.bubble);
+    els.stage.classList.toggle('has-img', memberView.useImages);
     score = 0;
     love = newLove();
     gaugeView = { level: 1, value: 0 };

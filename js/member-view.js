@@ -109,6 +109,8 @@ window.HP = window.HP || {};
       this.img.alt = member.name;
       this.img.src = member.images.idle;
       el.appendChild(this.img);
+      // 표정 전환 시 깜빡임이 없도록 미리 불러 둔다
+      Object.keys(member.images).forEach(function (k) { var p = new Image(); p.src = member.images[k]; });
     } else {
       el.innerHTML = avatarSVG(member, 'u' + (uidSeq++));
       this.svg = el.querySelector('svg');

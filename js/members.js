@@ -25,7 +25,15 @@ HP.MEMBERS = [
     id: 'seha', name: 'SEHA', kana: 'セハ',
     color: '#6fb8ff', hair: '#2f3557', iris: '#4a7fd6',
     hairStyle: 'long', accessory: 'ribbon',
-    images: {},
+    images: {
+      idle: 'assets/members/seha/idle.webp',
+      happy: 'assets/members/seha/happy.webp',
+      cheer: 'assets/members/seha/cheer.webp',
+      heart: 'assets/members/seha/heart.webp',
+      wink: 'assets/members/seha/wink.webp',
+      special: 'assets/members/seha/special.webp',
+      celebrate: 'assets/members/seha/celebrate.webp'
+    },
     lines: {
       happy: ['ありがとう！', 'とどいたよ！'],
       cheer: ['すごい！', 'もっといけるよ！'],
