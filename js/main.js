@@ -276,15 +276,19 @@
     view.setLevel(love.level);
     view.apply(love.level >= 6 ? 'special' : love.level >= 4 ? 'heart' : 'happy');
     $('resQuote').textContent = '「' + HP.lineFor(member, love.level >= 6 ? 'special' : love.level >= 3 ? 'heart' : 'happy') + '」';
+    updateShareLink();
     els.result.classList.add('show');
   }
 
-  function shareResult() {
+  /* X 공유 링크 (window.open 대신 일반 링크 — 임베드/샌드박스 환경에서도 동작) */
+  function updateShareLink() {
     var text = 'KZNA HEART POP\nSCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level + '\n' + member.kana + 'にハートを' + fmt(love.hearts) + '個届けたよ！';
-    var url = CFG.share.url || (location.protocol.indexOf('http') === 0 ? location.href.split('#')[0] : '');
+    var inFrame = false;
+    try { inFrame = window.top !== window; } catch (e) { inFrame = true; }
+    var url = CFG.share.url || (!inFrame && location.protocol.indexOf('http') === 0 ? location.href.split('#')[0] : '');
     var q = 'text=' + encodeURIComponent(text) + '&hashtags=' + encodeURIComponent(CFG.share.hashtags.join(','));
     if (url) q += '&url=' + encodeURIComponent(url);
-    window.open('https://twitter.com/intent/tweet?' + q, '_blank', 'noopener');
+    $('btnShare').href = 'https://twitter.com/intent/tweet?' + q;
   }
 
   /* ---------- 입력 ---------- */
@@ -325,7 +329,6 @@
   els.btnSound.addEventListener('click', function () { HP.Audio.setMuted(!HP.Audio.isMuted()); syncSoundBtn(); HP.Audio.tap(); });
   els.btnRestart.addEventListener('click', function () { HP.Audio.tap(); startGame(member); });
   $('btnAgain').addEventListener('click', function () { HP.Audio.tap(); startGame(member); });
-  $('btnShare').addEventListener('click', shareResult);
   $('btnChange').addEventListener('click', function () {
     HP.Audio.tap();
     els.result.classList.remove('show');
