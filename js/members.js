@@ -45,7 +45,15 @@ HP.MEMBERS = [
     id: 'hina', name: 'HINA', kana: 'ヒナ',
     color: '#ff7fb6', hair: '#6b4a3f', iris: '#d0567f',
     hairStyle: 'bob', accessory: 'star',
-    images: {},
+    images: {
+      idle: 'assets/members/hina/idle.webp',
+      happy: 'assets/members/hina/happy.webp',
+      cheer: 'assets/members/hina/cheer.webp',
+      heart: 'assets/members/hina/heart.webp',
+      wink: 'assets/members/hina/wink.webp',
+      special: 'assets/members/hina/special.webp',
+      celebrate: 'assets/members/hina/celebrate.webp'
+    },
     lines: {
       happy: ['やったー！', 'ありがとう！'],
       cheer: ['すごいすごい！', 'その調子！'],
