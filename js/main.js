@@ -315,15 +315,24 @@
 
   /* X 공유 링크 (window.open 대신 일반 링크 — 임베드/샌드박스 환경에서도 동작) */
   function updateShareLink() {
-    var text = 'KZNA HEART POP\nSCORE ' + fmt(score) + ' / ' + member.name + ' LOVE LV.' + love.level + '\n' +
-      HP.t('shareText', { name: HP.memberLocalName(member) || member.name, n: fmt(love.hearts), total: fmt(hwBase + love.total) });
     var inFrame = false;
     try { inFrame = window.top !== window; } catch (e) { inFrame = true; }
     var url = CFG.share.url || (!inFrame && location.protocol.indexOf('http') === 0 ? location.href.split('#')[0] : '');
-    var q = 'text=' + encodeURIComponent(text) + '&hashtags=' + encodeURIComponent(CFG.share.hashtags.join(','));
-    if (url) q += '&url=' + encodeURIComponent(url);
-    $('btnShare').href = 'https://twitter.com/intent/tweet?' + q;
+    // 줄 바꿈까지 직접 구성 (해시태그·링크를 X에 맡기면 순서가 섞이므로 본문에 넣는다)
+    var text = [
+      '【KZNA HEART POP】',
+      '',
+      '💗 ' + member.name + ' LOVE Lv.' + love.level,
+      '🏆 SCORE ' + fmt(score),
+      '',
+      HP.t('shareText', { name: HP.memberLocalName(member) || member.name, n: fmt(love.hearts), total: fmt(hwBase + love.total) }),
+      '',
+      CFG.share.hashtags.map(function (h) { return '#' + h; }).join(' ')
+    ];
+    if (url) text.push(url);
+    $('btnShare').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text.join('\n'));
   }
+
 
   /* ---------- 다국어 ---------- */
   var resultQuote = '';
