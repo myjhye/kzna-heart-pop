@@ -40,8 +40,7 @@ HP.I18N = {
     scoreLbl: 'スコア',
     bestLbl: 'ベスト',
     nextLbl: 'つぎ',
-    newBest: 'NEW!',
-    ribbon: '推し活パズル'
+    newBest: 'NEW!'
   },
   ko: {
     htmlLang: 'ko',
@@ -71,8 +70,7 @@ HP.I18N = {
     scoreLbl: '점수',
     bestLbl: '최고',
     nextLbl: '다음',
-    newBest: '신기록!',
-    ribbon: '최애 응원 퍼즐'
+    newBest: '신기록!'
   },
   en: {
     htmlLang: 'en',
@@ -102,8 +100,7 @@ HP.I18N = {
     scoreLbl: 'Score',
     bestLbl: 'Best',
     nextLbl: 'Next',
-    newBest: 'NEW!',
-    ribbon: 'Oshi-katsu puzzle'
+    newBest: 'NEW!'
   }
 };
 
