@@ -16,28 +16,28 @@ HP.CONFIG = {
 
   physics: {
     gravity: 1.0,
-    restitution: 0.72,     // 튕김 (0 = 안 튕김, 1 = 완전 탄성)
+    restitution: 0.56,     // 튕김 (0 = 안 튕김, 1 = 완전 탄성)
     friction: 0.1,         // 굴러가려면 약간의 마찰이 필요 (너무 낮으면 미끄러지기만 함)
     frictionStatic: 0.15,  // 낮을수록 경사에서 쉽게 굴러 내려감
     frictionAir: 0.001,    // 낮을수록 오래 굴러감
     density: 0.0012,
-    mergePop: 3.6,         // 합성 직후 위로 튀어 오르는 힘
+    mergePop: 3.0,         // 합성 직후 위로 튀어 오르는 힘
     stepMs: 1000 / 60
   },
 
   /* 아이템 티어 (0 = 가장 작음, 10 = 최종). glyph는 board.js의 그리기 함수 이름 */
   tiers: [
-    { r: 14,  base: '#eef3fa', dark: '#97a6bc', glyph: 'sparkle' },
-    { r: 19,  base: '#c4e8ff', dark: '#3f97d3', glyph: 'note' },
-    { r: 25,  base: '#ddd2ff', dark: '#7a63d6', glyph: 'star' },
-    { r: 32,  base: '#ffc6df', dark: '#e0509a', glyph: 'heart' },
-    { r: 40,  base: '#c3f4ec', dark: '#2fae9b', glyph: 'diamond' },
-    { r: 48,  base: '#cdd9ff', dark: '#4a5ed0', glyph: 'moon' },
-    { r: 57,  base: '#ffd3e6', dark: '#cc4584', glyph: 'flower' },
-    { r: 67,  base: '#addfff', dark: '#276cb5', glyph: 'planet' },
-    { r: 78,  base: '#fff1cc', dark: '#c3953a', glyph: 'crown' },
-    { r: 90,  base: '#ffb8d9', dark: '#bf2f78', glyph: 'bigheart' },
-    { r: 104, base: '#f5f9ff', dark: '#8ba0c2', glyph: 'kzna' }
+    { r: 14,  base: '#ffe27a', glyph: 'sparkle',  face: { eyes: 'dot',     mouth: 'w' } },
+    { r: 19,  base: '#8fd3ff', glyph: 'note',     face: { eyes: 'happy',   mouth: 'smile' } },
+    { r: 25,  base: '#c9a9ff', glyph: 'star',     face: { eyes: 'dot',     mouth: 'smile' }, accent: '#ffe27a' },
+    { r: 32,  base: '#ff8fc1', glyph: 'heart',    face: { eyes: 'wink',    mouth: 'w' } },
+    { r: 40,  base: '#7ee3c8', glyph: 'diamond',  face: { eyes: 'sparkle', mouth: 'smile' } },
+    { r: 48,  base: '#8e9bff', glyph: 'moon',     face: { eyes: 'sleepy',  mouth: 'o' },     accent: '#ffe27a' },
+    { r: 57,  base: '#ffb38a', glyph: 'flower',   face: { eyes: 'happy',   mouth: 'open' } },
+    { r: 67,  base: '#5fb2ff', glyph: 'planet',   face: { eyes: 'sparkle', mouth: 'w' },     accent: '#ffe27a' },
+    { r: 78,  base: '#ffd24d', glyph: 'crown',    face: { eyes: 'dot',     mouth: 'open' } },
+    { r: 90,  base: '#ff5fa2', glyph: 'bigheart', face: { eyes: 'heart',   mouth: 'open' } },
+    { r: 104, base: '#ffffff', glyph: 'kzna' }
   ],
 
   dropMaxTier: 4,        // 떨어뜨릴 수 있는 최대 티어
@@ -94,7 +94,7 @@ HP.CONFIG = {
 
   share: {
     hashtags: ['KZNA', 'KZNAHEARTPOP'],
-    url: ''   // 비워두면 현재 페이지 주소를 사용
+    url: 'https://kzna-heart-pop.pages.dev/'   // X 공유 글에 붙는 게임 링크 (Cloudflare Pages 기본 주소 = 항상 최신 배포)
   }
 };
 

@@ -110,12 +110,13 @@ window.HP = window.HP || {};
       var img = HP.logoImg;
       if (img && img.complete && img.naturalWidth) {
         var w = s * 2.3, h = w * img.naturalHeight / img.naturalWidth;
+        var col = arguments[2] || '#2c3d63';
         var tmp = document.createElement('canvas');
         tmp.width = img.naturalWidth; tmp.height = img.naturalHeight;
         var tc = tmp.getContext('2d');
         tc.drawImage(img, 0, 0);
         tc.globalCompositeOperation = 'source-in';
-        tc.fillStyle = '#2c3d63'; tc.fillRect(0, 0, tmp.width, tmp.height);
+        tc.fillStyle = col; tc.fillRect(0, 0, tmp.width, tmp.height);
         c.drawImage(tmp, -w / 2, -h / 2 - s * 0.02, w, h);
         return;
       }
@@ -127,7 +128,98 @@ window.HP = window.HP || {};
     }
   };
 
-  /* 크롬/아이스블루 질감의 구슬 스프라이트 (화면 해상도에 맞춰 캐시) */
+  /* ---------- 공 디자인 ----------
+   * 수박게임 과일처럼: 평평한 팝 컬러 + 굵은 잉크 외곽선 + 귀여운 얼굴
+   * + 아이돌 모티프 액세서리(머리핀처럼). 최종 티어는 kzna 로고.
+   */
+  var INK = '#1e2a47';
+
+  function shade(hex, amt) {
+    var n = parseInt(hex.slice(1), 16);
+    var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    function f(v) { return Math.max(0, Math.min(255, Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt))); }
+    return 'rgb(' + f(r) + ',' + f(g) + ',' + f(b) + ')';
+  }
+
+  function heartAt(c, x, y, w, fill) {
+    heartPath(c, x, y, w); c.fillStyle = fill; c.fill();
+    c.lineWidth = Math.max(1, w * 0.14); c.strokeStyle = INK; c.stroke();
+  }
+
+  function drawFace(c, r, face) {
+    var ey = r * 0.02, ex = r * 0.3;
+    var lw = Math.max(1.4, r * 0.07);
+    var er = Math.max(1.5, r * 0.09);
+    c.lineCap = 'round'; c.lineJoin = 'round';
+    c.strokeStyle = INK; c.fillStyle = INK; c.lineWidth = lw;
+
+    // 볼터치
+    c.save(); c.globalAlpha = 0.55; c.fillStyle = '#ff6fa8';
+    c.beginPath(); c.ellipse(-r * 0.48, r * 0.2, r * 0.14, r * 0.085, 0, 0, TAU); c.fill();
+    c.beginPath(); c.ellipse(r * 0.48, r * 0.2, r * 0.14, r * 0.085, 0, 0, TAU); c.fill();
+    c.restore();
+    c.strokeStyle = INK; c.fillStyle = INK;
+
+    function dot(x) {
+      c.beginPath(); c.arc(x, ey, er, 0, TAU); c.fill();
+      if (r >= 24) { c.fillStyle = '#fff'; c.beginPath(); c.arc(x - er * 0.35, ey - er * 0.4, er * 0.38, 0, TAU); c.fill(); c.fillStyle = INK; }
+    }
+    function arcUp(x) { c.beginPath(); c.arc(x, ey + er * 0.6, er * 1.15, Math.PI * 1.15, Math.PI * 1.85); c.stroke(); }
+    function sparkle(x) {
+      c.beginPath(); c.ellipse(x, ey, er * 1.25, er * 1.5, 0, 0, TAU); c.fill();
+      c.fillStyle = '#fff';
+      c.beginPath(); c.arc(x - er * 0.4, ey - er * 0.55, er * 0.5, 0, TAU); c.fill();
+      c.beginPath(); c.arc(x + er * 0.45, ey + er * 0.5, er * 0.25, 0, TAU); c.fill();
+      c.fillStyle = INK;
+    }
+    function line(x) { c.beginPath(); c.moveTo(x - er * 1.1, ey + er * 0.2); c.quadraticCurveTo(x, ey + er * 0.9, x + er * 1.1, ey + er * 0.2); c.stroke(); }
+
+    var e = face.eyes;
+    if (e === 'dot') { dot(-ex); dot(ex); }
+    else if (e === 'happy') { arcUp(-ex); arcUp(ex); }
+    else if (e === 'wink') { dot(-ex); c.beginPath(); c.moveTo(ex + er, ey - er); c.lineTo(ex - er * 0.6, ey); c.lineTo(ex + er, ey + er); c.stroke(); }
+    else if (e === 'sparkle') { sparkle(-ex); sparkle(ex); }
+    else if (e === 'sleepy') { line(-ex); line(ex); }
+    else if (e === 'heart') { heartAt(c, -ex, ey, er * 3, '#ff4f9a'); heartAt(c, ex, ey, er * 3, '#ff4f9a'); }
+
+    // 입
+    var my = r * 0.24, mw = Math.max(2.2, r * 0.11);
+    c.strokeStyle = INK; c.fillStyle = INK; c.lineWidth = lw;
+    var m = face.mouth;
+    if (m === 'w') {
+      c.beginPath(); c.arc(-mw * 0.5, my - mw * 0.2, mw * 0.5, 0.15, Math.PI - 0.15); c.arc(mw * 0.5, my - mw * 0.2, mw * 0.5, 0.15, Math.PI - 0.15); c.stroke();
+    } else if (m === 'smile') {
+      c.beginPath(); c.arc(0, my - mw * 0.5, mw, 0.25, Math.PI - 0.25); c.stroke();
+    } else if (m === 'open') {
+      c.beginPath(); c.moveTo(-mw, my - mw * 0.35); c.quadraticCurveTo(0, my + mw * 1.5, mw, my - mw * 0.35); c.closePath();
+      c.fillStyle = '#ff6b8f'; c.fill(); c.stroke();
+    } else if (m === 'o') {
+      c.beginPath(); c.ellipse(0, my, mw * 0.45, mw * 0.55, 0, 0, TAU); c.stroke();
+    }
+  }
+
+  /* 모티프를 흰색 + 잉크 외곽선 스티커로 */
+  function drawMotif(c, glyph, x, y, s, pxPerUnit, color) {
+    var size = Math.ceil(s * 2.6 * pxPerUnit);
+    function layer(col) {
+      var cv = document.createElement('canvas'); cv.width = cv.height = size;
+      var g = cv.getContext('2d');
+      g.scale(pxPerUnit, pxPerUnit); g.translate(s * 1.3, s * 1.3);
+      g.fillStyle = col; g.strokeStyle = col;
+      GLYPHS[glyph](g, s);
+      return cv;
+    }
+    var ink = layer(INK), fill = layer(color);
+    var o = Math.max(1.2, s * 0.16);
+    c.save(); c.translate(x, y); c.rotate(0.25);
+    for (var k = 0; k < 8; k++) {
+      var a = (k / 8) * TAU;
+      c.drawImage(ink, -s * 1.3 + Math.cos(a) * o, -s * 1.3 + Math.sin(a) * o, s * 2.6, s * 2.6);
+    }
+    c.drawImage(fill, -s * 1.3, -s * 1.3, s * 2.6, s * 2.6);
+    c.restore();
+  }
+
   function makeSprite(tier, pxPerUnit) {
     var r = tier.r;
     var pad = 4;
@@ -138,55 +230,45 @@ window.HP = window.HP || {};
     c.scale(pxPerUnit, pxPerUnit);
     c.translate(r + pad, r + pad);
 
-    // 본체
-    var g = c.createRadialGradient(-r * 0.35, -r * 0.4, r * 0.05, 0, 0, r);
-    g.addColorStop(0, '#ffffff');
-    g.addColorStop(0.28, tier.base);
-    g.addColorStop(1, tier.dark);
-    c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fillStyle = g; c.fill();
+    // 몸통: 평평한 색 + 오른쪽 아래 납작한 그림자
+    c.save();
+    c.beginPath(); c.arc(0, 0, r, 0, TAU); c.clip();
+    c.fillStyle = shade(tier.base, -0.16); c.fillRect(-r, -r, r * 2, r * 2);
+    c.fillStyle = tier.base;
+    c.beginPath(); c.arc(-r * 0.08, -r * 0.1, r * 0.94, 0, TAU); c.fill();
+    // 망점 무늬 (큰 공만)
+    if (r >= 40) {
+      c.fillStyle = 'rgba(255,255,255,0.22)';
+      var step = r * 0.22;
+      for (var yy = -r; yy < r; yy += step) for (var xx = -r + ((yy / step) % 2 ? step / 2 : 0); xx < r; xx += step) {
+        c.beginPath(); c.arc(xx, yy, r * 0.028, 0, TAU); c.fill();
+      }
+    }
+    // 하이라이트 (평평한 흰 반달 + 점)
+    c.fillStyle = 'rgba(255,255,255,0.85)';
+    c.beginPath(); c.ellipse(-r * 0.46, -r * 0.5, r * 0.22, r * 0.12, -0.75, 0, TAU); c.fill();
+    c.beginPath(); c.arc(-r * 0.2, -r * 0.7, r * 0.06, 0, TAU); c.fill();
+    c.restore();
 
-    // 홀로그램 광택
-    if (c.createConicGradient) {
-      c.save();
-      c.beginPath(); c.arc(0, 0, r, 0, TAU); c.clip();
-      var cg = c.createConicGradient(0.6, 0, 0);
-      cg.addColorStop(0, 'rgba(160,240,255,0.0)');
-      cg.addColorStop(0.2, 'rgba(160,240,255,0.35)');
-      cg.addColorStop(0.45, 'rgba(255,170,230,0.3)');
-      cg.addColorStop(0.7, 'rgba(200,180,255,0.25)');
-      cg.addColorStop(1, 'rgba(160,240,255,0.0)');
-      c.globalCompositeOperation = 'soft-light';
-      c.fillStyle = cg; c.fillRect(-r, -r, r * 2, r * 2);
+    if (tier.glyph === 'kzna') {
+      // 최종 티어: kzna 로고 + 볼터치 + 반짝이
+      GLYPHS.kzna(c, r * 0.6, INK);
+      c.save(); c.globalAlpha = 0.5; c.fillStyle = '#ff6fa8';
+      c.beginPath(); c.ellipse(-r * 0.5, r * 0.36, r * 0.12, r * 0.07, 0, 0, TAU); c.fill();
+      c.beginPath(); c.ellipse(r * 0.5, r * 0.36, r * 0.12, r * 0.07, 0, 0, TAU); c.fill();
       c.restore();
+      drawMotif(c, 'sparkle', r * 0.5, -r * 0.5, r * 0.14, pxPerUnit, '#ffd84d');
+      drawMotif(c, 'sparkle', -r * 0.55, r * 0.55, r * 0.09, pxPerUnit, '#8fd3ff');
+    } else {
+      drawFace(c, r, tier.face);
+      // 모티프 액세서리 (작은 공은 생략)
+      if (r >= 24) drawMotif(c, tier.glyph, r * 0.5, -r * 0.52, r * 0.2, pxPerUnit, tier.accent || '#ffffff');
     }
 
-    // 문양 (별도 캔버스에 흰색으로 그린 뒤 합성)
-    var gs = Math.ceil(r * 2 * pxPerUnit);
-    var gc = document.createElement('canvas');
-    gc.width = gc.height = gs;
-    var gx = gc.getContext('2d');
-    gx.scale(pxPerUnit, pxPerUnit);
-    gx.translate(r, r);
-    gx.fillStyle = '#ffffff'; gx.strokeStyle = '#ffffff';
-    GLYPHS[tier.glyph](gx, r * 0.52);
-    c.save();
-    c.shadowColor = tier.dark; c.shadowBlur = r * 0.18 * pxPerUnit; c.shadowOffsetY = r * 0.04 * pxPerUnit;
-    c.globalAlpha = 0.95;
-    c.drawImage(gc, -r, -r, r * 2, r * 2);
-    c.restore();
-
-    // 하이라이트 + 테두리
-    c.save();
-    c.beginPath(); c.ellipse(-r * 0.38, -r * 0.5, r * 0.36, r * 0.2, -0.6, 0, TAU);
-    c.fillStyle = 'rgba(255,255,255,0.75)'; c.fill();
-    c.restore();
-    // 수박게임처럼 굵은 잉크 외곽선
-    var ink = Math.max(2, Math.min(3.2, r * 0.11));
-    c.lineWidth = Math.max(1, r * 0.05);
-    c.strokeStyle = 'rgba(255,255,255,0.7)';
-    c.beginPath(); c.arc(0, 0, r - ink - c.lineWidth / 2, 0, TAU); c.stroke();
+    // 굵은 잉크 외곽선
+    var ink = Math.max(2, Math.min(3.4, r * 0.12));
     c.lineWidth = ink;
-    c.strokeStyle = '#1e2a47';
+    c.strokeStyle = INK;
     c.beginPath(); c.arc(0, 0, r - ink / 2, 0, TAU); c.stroke();
     return { canvas: cv, half: r + pad };
   }
@@ -328,7 +410,7 @@ window.HP = window.HP || {};
         M.Body.setAngularVelocity(nb, (a.angularVelocity + b.angularVelocity) / 2);
       }
       this.mergeCount++;
-      this.fx.push({ x: x, y: y, r: this.cfg.tiers[Math.min(tier + 1, maxTier)].r, t0: this.time, dur: 420, color: this.cfg.tiers[tier].dark });
+      this.fx.push({ x: x, y: y, r: this.cfg.tiers[Math.min(tier + 1, maxTier)].r, t0: this.time, dur: 420, color: this.cfg.tiers[tier].base });
       if (this.hooks.onMerge) this.hooks.onMerge({ x: x, y: y, tier: tier, newTier: vanish ? null : tier + 1, vanish: vanish });
     }
   };
