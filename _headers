@@ -1,0 +1,12 @@
+# Cloudflare Pages 캐시 설정
+# 이미지/라이브러리는 오래 캐시, HTML/CSS/JS 는 배포 직후 바로 반영되도록 짧게
+/assets/*
+  Cache-Control: public, max-age=604800
+/vendor/*
+  Cache-Control: public, max-age=2592000, immutable
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/css/*
+  Cache-Control: public, max-age=300
+/js/*
+  Cache-Control: public, max-age=300

@@ -12,6 +12,18 @@
 - **공식 홈페이지 버튼**: 결과 화면 하단, 현재 언어 경로(`/ko` `/ja` `/en`)로 이동 (`config.homepage`).
 - **BGM**: 코드로 연주하는 128 BPM 칩튠 신스팝 루프 (외부 음원 없음, `js/audio.js`).
 
+## 배포 (Cloudflare Pages)
+
+main 에 푸시하면 `.github/workflows/deploy-cloudflare.yml` 이 Cloudflare Pages 로 자동 배포한다 (빌드 없음).
+최초 1회 GitHub 저장소 Settings → Secrets and variables → Actions 에 두 값을 등록한다.
+
+| 이름 | 어디서 |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → Create Token → "Edit Cloudflare Workers" 템플릿 |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare → Workers & Pages 화면 오른쪽 Account ID |
+
+등록 후 Actions 탭에서 "Deploy to Cloudflare Pages" → Run workflow 로 바로 배포할 수 있다. 주소는 `https://kzna-heart-pop.pages.dev`.
+
 ## 실행
 
 빌드 과정이 없는 순수 HTML/JS 입니다. 폴더를 정적 서버로 열면 바로 플레이할 수 있습니다.
