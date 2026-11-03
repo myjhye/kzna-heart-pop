@@ -208,12 +208,11 @@ HP.REACTION_LINES = {
     listeners.forEach(function (fn) { fn(lang); });
   };
 
-  /* 언어 고정 모드 (config.fixedLang) */
-  if (HP.CONFIG.fixedLang && HP.I18N[HP.CONFIG.fixedLang]) {
-    HP.LANGS = [HP.CONFIG.fixedLang];
-    HP.lang = HP.CONFIG.fixedLang;
+  /* 기본 언어 모드: ?lang → 직접 고른 언어 → config.defaultLang (자동 감지 안 함) */
+  if (!HP.CONFIG.autoDetectLang) {
+    HP.lang = urlLang() || read('hp_lang') || HP.CONFIG.defaultLang || 'ja';
+    if (!HP.I18N[HP.lang]) HP.lang = 'ja';
     document.documentElement.lang = HP.I18N[HP.lang].htmlLang;
-    HP.setLang = function () {};
     return;
   }
 

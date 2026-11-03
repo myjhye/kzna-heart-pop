@@ -8,7 +8,7 @@
 
 - **HEARTWARE 누적**: 판마다 전달한 LOVE가 멤버별로 계속 쌓인다 (선택 화면 카드 · 게임 상단 · 결과 화면에 표시, 브라우저에 저장).
 - **하트 도착 대사**: 하트가 닿을 때마다 레벨 구간(LV.1–2 / 3–4 / 5–6 / 7+)에 맞는 대사가 말풍선으로 랜덤 표시. 언어별 256개 (`js/lines.js`).
-- **언어**: 현재 일본어 고정 (`config.fixedLang: 'ja'`). `null` 로 바꾸면 한국어 / 日本語 / English 자동 선택이 다시 켜진다. `?lang=` → 사용자가 고른 언어 → 접속 IP 국가(KR→ko, JP→ja, 그 외 en, `config.geoApi`) → 기기 시간대 순으로 결정. 화면 문구는 `js/i18n.js`.
+- **언어**: 기본 일본어(`config.defaultLang`), 홈 화면 KO / JA / EN 버튼으로 전환(선택은 저장). `config.autoDetectLang: true` 로 바꾸면 접속 IP 국가로 자동 선택. 화면 문구는 `js/i18n.js`.
 - **공식 홈페이지 버튼**: 결과 화면 하단, 현재 언어 경로(`/ko` `/ja` `/en`)로 이동 (`config.homepage`).
 - **BGM**: 코드로 연주하는 128 BPM 칩튠 신스팝 루프 (외부 음원 없음, `js/audio.js`).
 
