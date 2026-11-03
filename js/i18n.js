@@ -208,6 +208,15 @@ HP.REACTION_LINES = {
     listeners.forEach(function (fn) { fn(lang); });
   };
 
+  /* 언어 고정 모드 (config.fixedLang) */
+  if (HP.CONFIG.fixedLang && HP.I18N[HP.CONFIG.fixedLang]) {
+    HP.LANGS = [HP.CONFIG.fixedLang];
+    HP.lang = HP.CONFIG.fixedLang;
+    document.documentElement.lang = HP.I18N[HP.lang].htmlLang;
+    HP.setLang = function () {};
+    return;
+  }
+
   /* 초기 언어: 동기적으로 먼저 정하고, IP 결과가 오면 갱신 */
   var fixed = urlLang() || read('hp_lang');
   HP.lang = fixed || guessOffline();

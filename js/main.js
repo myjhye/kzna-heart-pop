@@ -357,6 +357,7 @@
   }
 
   HP.onLangChange(applyLang);
+  if (HP.LANGS.length < 2) $('langSwitch').hidden = true;   // 언어가 하나면 전환 버튼 숨김
   $('langSwitch').addEventListener('click', function (e) {
     var l = e.target.getAttribute && e.target.getAttribute('data-lang');
     if (l) { HP.Audio.tap(); HP.setLang(l, true); }

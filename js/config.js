@@ -86,6 +86,10 @@ HP.CONFIG = {
   // 게임 종료 후 비행 중인 하트를 기다리는 최대 시간 (초과 시 즉시 지급)
   endFlushTimeoutMs: 3200,
 
+  // 언어 고정. 'ja' 로 두면 일본어만 쓰고 언어 전환 버튼도 숨긴다.
+  // null 로 바꾸면 한국어/일본어/영어 자동 선택(IP 국가) + 전환 버튼이 다시 켜진다.
+  fixedLang: 'ja',
+
   // 결과 화면 '공식 홈페이지' 버튼. 뒤에 /ko, /ja, /en 이 붙는다
   homepage: 'https://kzna-homepage-17280846291.asia-northeast3.run.app',
 
